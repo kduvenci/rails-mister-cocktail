@@ -1,2 +1,13 @@
 <%= render 'navbar' %>
-<%= render 'banner' %>
+<%#= render 'banner' %>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <% @cocktails.each do |cocktail| %>
+        <%= link_to cocktail.name, cocktail_path(cocktail) %>
+        <br>
+      <% end %>
+      <%= link_to 'Add Cocktail', new_cocktail_path, class: "btn btn-success" %>
+    </div>
+  </div>
+</div>
