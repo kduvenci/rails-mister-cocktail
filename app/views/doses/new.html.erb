@@ -1,3 +1,16 @@
-<h1>Cocktails#new</h1>
-<p>Find me in app/views/cocktails/new.html.erb</p>
-<%= f.input :ingredients, collection: Ingredient.order(:name), prompt: "Select Ingredient" %>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <h3>Add Dose to <%= @cocktail.name %></h3>
+      <%= simple_form_for [@cocktail, @dose] do |f| %>
+        <%= f.input :description %>
+        <%= f.input :ingredient_id, collection: @collection, prompt: "Select Ingredient" %>
+        <%= link_to '< Back', cocktail_path(@cocktail), class:"btn btn-primary" %>
+        <%= f.submit "Add Dose", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+

@@ -3,9 +3,10 @@
   <%= @cocktail.name %><br>
   <% @cocktail.doses.each do |dose| %>
     <%= dose.description %> - <%=dose.ingredient.name %>
+    <%= link_to 'Del', dose, method: :delete, data: { confirm: 'Are you sure?' } %>
+    <br>
   <% end %>
   <br>
-  <%= link_to 'Home', root_path, class: "btn btn-success" %>
-  <%= link_to 'Edit', edit_cocktail_path, class: "btn btn-warning" %>
-
+  <%= link_to 'Home', root_path, class: "btn btn-primary" %>
+  <%= link_to 'Add Dose', new_cocktail_dose_path(@cocktail), class: "btn btn-success" %>
 </div>

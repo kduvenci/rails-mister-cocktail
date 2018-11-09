@@ -4,7 +4,8 @@
       <h1>Create Cocktail</h1>
       <%= simple_form_for @cocktail do |f| %>
         <%= f.input :name %>
-        <%= f.submit "Save", class: "btn btn-primary" %>
+        <%= link_to '< Back', :root, class:"btn btn-primary" %>
+        <%= f.submit "Save", class: "btn btn-success" %>
       <% end %>
     </div>
   </div>
