@@ -43,6 +43,8 @@ gem 'bootstrap-sass', '~> 3.3.7'
 gem 'font-awesome-sass', '~> 5.0.9'
 gem 'simple_form'
 gem 'cloudinary'
+gem 'rest-client', '~> 2.0', '>= 2.0.2'
+gem 'carrierwave', '~> 1.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

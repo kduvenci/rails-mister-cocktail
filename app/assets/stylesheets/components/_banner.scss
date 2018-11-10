@@ -1,9 +1,16 @@
 .banner {
+  position: relative;
+  left: 0px;
+  top: -50px;
+  z-index: -1;
+
+  background-image: linear-gradient(-225deg, rgba(0,101,168,0.6) 0%, rgba(0,36,61,0.6) 50%),
+  url("https://res.cloudinary.com/dplcic1aj/image/upload/v1541813776/sx5in6sgb486dtygmnfc.jpg");
+  background-size: cover !important;
+
   color: white;
   text-align: center;
   height: 100vh;
-  /* if you have a 70px navbar => height: calc(100vh - 70px); */
-  background-size: cover !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,8 +22,7 @@
 }
 .banner p {
   font-size: 25px;
-  font-weight: lighter;
   color: rgb(255, 255, 255);
-  opacity: 0.6;
-  margin-bottom: 30px;
+  opacity: 0.5;
+  margin: 50px 0;
 }
