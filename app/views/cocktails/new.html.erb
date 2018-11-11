@@ -1,14 +1,16 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <h1>Create Cocktail</h1>
-      <%= simple_form_for @cocktail do |f| %>
-        <%= f.input :name %>
-        <%= link_to '< Back', :root, class:"btn btn-primary" %>
-        <%= f.input :photo %>
-        <%= f.input :photo_cache, as: :hidden %>
-        <%= f.submit "Save", class: "btn btn-success" %>
-      <% end %>
+<div class="content-show">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3 text-left">
+        <h1>Create Cocktail</h1>
+        <%= simple_form_for @cocktail do |f| %>
+          <%= f.input :name, class:"text-left" %>
+          <%= f.input :photo %>
+          <%= f.input :photo_cache, as: :hidden %>
+          <%= link_to '< Back', :root, class:"btn btn-primary" %>
+          <%= f.submit "Save", class: "btn btn-success" %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

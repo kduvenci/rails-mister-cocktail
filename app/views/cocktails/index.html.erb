@@ -1,21 +1,25 @@
 <%= render 'navbar' %>
 <%= render 'banner' %>
 
-
-
 <div class="container">
+	<h2 class="caption">
+		<i class="fas fa-angle-double-down"></i>
+		 &nbsp; &nbsp; &nbsp; Explore More  &nbsp; &nbsp; &nbsp; 
+		<i class="fas fa-angle-double-down"></i>
+	</h2>
   <div class="row">
-	    <div id="transcroller-body" class="aos-all">
-				<% @cocktails.each do |cocktail| %>
-    			<div class="col-lg-4">
-						<div class="aos-item" data-aos="fade-up">
-							<div class="aos-item__inner">
-								<div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)), url('<%= cl_image_path cocktail.photo, height: 300, width: 400, crop: :fill %>')">
-									<div class="card-category">Popular</div>
-									<div class="card-description">
-										<h2><%= cocktail.name%></h2>
-										<p>Very cool stuff, useful and smart</p>
-									</div>
+	  <div id="transcroller-body" class="aos-all">
+			<% @cocktails.each do |cocktail| %>
+    		<div class="col-xs-12 col-sm-4">
+					<div class="aos-item" data-aos="flip-up">
+						<div class="aos-item__inner">
+							<div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3),
+							rgba(0,0,0,0.2)),url('<%= cl_image_path cocktail.photo, height: 300, width: 400, crop: :fill %>')">
+								<div class="card-category">(っ◔◡◔)っ</div>
+								<div class="card-description">
+									<h2><%= cocktail.name%></h2>
+									<p>♪ღ♪*•.¸¸.•*¨¨*•.♪ღ♪*•.¸</p>
+								</div>
 								<a class="card-link" href="<%= cocktail_path(cocktail) %>" ></a>
 							</div>				
 						</div>

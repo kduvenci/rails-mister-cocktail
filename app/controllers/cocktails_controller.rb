@@ -1,3 +1,4 @@
+# cocktails controller
 class CocktailsController < ApplicationController
   before_action :set_cocktail, only: [:show, :edit, :update, :destroy]
 
@@ -6,6 +7,7 @@ class CocktailsController < ApplicationController
   end
 
   def show
+    # before_action
   end
 
   def new
@@ -13,12 +15,13 @@ class CocktailsController < ApplicationController
   end
 
   def edit
+    # before_action
   end
 
   def create
     @cocktail = Cocktail.new(cocktail_params)
     if @cocktail.save
-      redirect_to @cocktail, notice: 'Cocktail was successfully created.'
+      redirect_to @cocktail
     else
       render :new
     end
@@ -26,7 +29,7 @@ class CocktailsController < ApplicationController
 
   def update
     if @cocktail.update(cocktail_params)
-      redirect_to @cocktail, notice: 'Cocktail was successfully updated.'
+      redirect_to @cocktail
     else
       render :edit
     end
@@ -34,7 +37,7 @@ class CocktailsController < ApplicationController
 
   def destroy
     @cocktail.destroy
-    redirect_to cocktails_url, notice: 'Cocktail was successfully destroyed.'
+    redirect_to cocktails_url
   end
 
   private

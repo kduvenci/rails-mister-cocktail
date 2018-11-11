@@ -1,13 +1,35 @@
-<br><br><br>
-<div class="container">
-  <%= @cocktail.name %><br>
-  <%= cl_image_tag @cocktail.photo, height: 300, width: 400, crop: :fill %>
-  <% @cocktail.doses.each do |dose| %>
-    <%= dose.description %> - <%=dose.ingredient.name %>
-    <%= link_to 'Del', dose, method: :delete, data: { confirm: 'Are you sure?' } %>
-    <br>
-  <% end %>
-  <br>
-  <%= link_to 'Home', root_path, class: "btn btn-primary" %>
-  <%= link_to 'Add Dose', new_cocktail_dose_path(@cocktail), class: "btn btn-success" %>
+<div class="content-show">
+  <div class="container">
+    <div class="aos-item" data-aos="fade-down">
+      <h1>Cocktail : <%= @cocktail.name %></h1>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-lg-4 text-left">
+        <div class="row">
+            <%= cl_image_tag @cocktail.photo, height: 300, width: 400, crop: :fill, class: "card-show" %>
+        </div>
+        <br><br><br>
+        <div class="row aos-item" data-aos="fade-up">
+          <%= link_to '< Home', root_path, class: "btn btn-primary" %>
+          <%= link_to '+ Add Dose', new_cocktail_dose_path(@cocktail), class: "btn btn-success" %>
+        </div>
+      </div>
+      <div class="col-xs-12 col-lg-3 text-right">
+        <div class="aos-item" data-aos="fade-left">
+          <h2>. : Ingredinents : .</h2>
+        </div>
+        <div class="aos-item" data-aos="fade" data-aos-delay="500" data-aos-duration="1000">
+            <% @cocktail.doses.each do |dose| %>
+            <p><%=dose.ingredient.name %> (<%= dose.description %>) 
+            <%= link_to dose, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <i class="fas fa-trash-alt"></i>
+            <% end %>  
+            </p>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-xs-12 col-lg-3">
+      </div>
+    </div>
+  </div>
 </div>

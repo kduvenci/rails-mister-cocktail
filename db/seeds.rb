@@ -1,38 +1,115 @@
-Cocktail.destroy_all if Rails.env.development?
-Dose.destroy_all if Rails.env.development?
-Ingredient.destroy_all if Rails.env.development?
+# Seeding from www.thecocktaildb.com API
+require 'json'
+require 'rest-client'
 
-i_1 = Ingredient.create(name: "lemon")
-i_2 = Ingredient.create(name: "ice")
-i_3 = Ingredient.create(name: "mint leaves")
-i_4 = Ingredient.create(name: "soda")
-i_5 = Ingredient.create(name: "rye")
-i_6 = Ingredient.create(name: "Angostura bitters")
+def seed_from_api
+  destroy_db # comment it if you want to keep your DB!!
+  begin_fetching_data
+end
 
+def destroy_db
+  if Rails.env.development?
+    puts 'Deleting DB. Please wait..'
+    Cocktail.destroy_all
+    puts 'Cocktails destroyed.'
+    Dose.destroy_all
+    puts 'Doses destroyed.'
+    Ingredient.destroy_all
+    puts 'Ingredients destroyed.'
+  else
+    puts 'Destroy canceled.'
+  end
+end
 
-c_0 = Cocktail.new(name: "Mojito")
-c_0.remote_photo_url = 'https://cdn.liquor.com/wp-content/uploads/2018/09/04153106/mojito-720x720-recipe.jpg'
-c_0.save
+def begin_fetching_data
+  puts '* Fetching data from www.thecocktaildb.com for cocktail list..'
+  url = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail'
 
-c_1 = Cocktail.new(name: "Old Fashioned")
-c_1.remote_photo_url = 'https://cdn.liquor.com/wp-content/uploads/2017/08/08074649/6-Rules-for-Drinking-Bourbone-bourbon-old-fashioned-720x720-slideshow.jpg'
-c_1.save
+  begin
+    response = RestClient.get(url)
+    cocktail_list = JSON.parse(response.body)['drinks']
+    puts '** Fetching succesful for cocktail list!'
+    puts '========================================='
+    fetch_cocktail_data(cocktail_list)
+  rescue StandardError => e
+    e.response
+  end
+end
 
-c_2 = Cocktail.new(name: "Negroni")
-c_2.remote_photo_url = 'http://cdn.liquor.com/wp-content/uploads/2016/04/15115430/NegroniOriginal720FB.jpg'
-c_2.save
+def fetch_cocktail_data(cocktail_list)
+  counter = 0
+  cocktail_list.each do |cocktail|
+    id = cocktail['idDrink']
+    url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=#{id}"
+    begin
+      response = RestClient.get(url)
+      cocktail = JSON.parse(response.body)['drinks'].first
+      puts "*** Fetching succesful for cocktail: #{cocktail['strDrink'].capitalize}."
+      save_cocktail(cocktail)
+      counter += 1
+    rescue StandardError => e
+      e.response
+    end
+  end
+  puts "#{counter} cocktails saved succesfuly !!! enjoy ;)"
+end
 
-c_3 = Cocktail.new(name: "Whiskey Sour")
-c_3.remote_photo_url = 'https://cdn.liquor.com/wp-content/uploads/2017/11/06162323/amaretto-sour-1200x628-social.jpg'
-c_3.save
+def save_cocktail(cocktail)
+  db_cocktail = Cocktail.new(name: cocktail['strDrink'].split(/ |\_|\-/).map(&:capitalize).join(" "))
+  db_cocktail.remote_photo_url = cocktail['strDrinkThumb']
+  if db_cocktail.save # Validation check and feedback
+    puts "Cocktail: #{db_cocktail.name} saved to db succesfuly."
+    save_doses(cocktail, db_cocktail)
+    puts "\n========================================================\n\n"
+  else
+    db_cocktail.errors.messages.each do |key, value|
+      puts "Saving error of Cocktail: #{db_cocktail.name}"
+      puts "Because: #{key} => #{value[0]}"
+    end
+  end
+end
 
-c_4 = Cocktail.new(name: "Dry Martini")
-c_4.remote_photo_url = 'https://cdn.diffordsguide.com/contrib/stock-images/2016/1/19/20161219e7cab35505de3992419d949a430e.jpg'
-c_4.save
+def save_doses(cocktail, db_cocktail)
+  # we are going to iterate ingredients in JSON
+  index = 1
+  puts "\n--- Saving Doses ---------------------------------------"
+  15.times do
+    measure = cocktail["strMeasure#{index}"].to_s.strip.split(/ |\_|\-/).map(&:capitalize).join(" ")
+    ingredient = cocktail["strIngredient#{index}"].to_s.strip.split(/ |\_|\-/).map(&:capitalize).join(" ")
 
-d_1 = Dose.create(description: "1 pcs", ingredient_id: i_1.id, cocktail_id: c_0.id)
-d_2 = Dose.create(description: "1 pcs", ingredient_id: i_2.id, cocktail_id: c_0.id)
-d_3 = Dose.create(description: "1 pcs", ingredient_id: i_3.id, cocktail_id: c_0.id)
+    # Reject empty measure and ingredient pairs
+    unless measure.empty? || ingredient.empty?
+      measure = measure.empty? ? '1' : measure
 
-d_4 = Dose.create(description: "1 pcs", ingredient_id: i_1.id, cocktail_id: c_1.id)
-d_5 = Dose.create(description: "2 pcs", ingredient_id: i_2.id, cocktail_id: c_2.id)
+      db_ingredient = Ingredient.new(name: ingredient)
+      if db_ingredient.save
+        puts "=> Ingredient: #{db_ingredient.name} saved to db succesfuly."
+      else
+        db_ingredient.errors.messages.each do |key, value|
+          puts "! Saving error for Ingredient: #{db_ingredient.name}"
+          puts "Because: #{key} => #{value[0]}"
+        end
+        db_ingredient = Ingredient.find_by name: db_ingredient.name
+        puts "= Ingredient: #{db_ingredient.name} setted from db."
+      end
+
+      db_dose = Dose.new(description: measure)
+      db_dose.ingredient = db_ingredient
+      db_dose.cocktail = db_cocktail
+
+      if db_dose.save
+        print "=> Dose: #{db_dose.description} => "
+        puts "#{db_ingredient.name} saved to db succesfuly."
+      else
+        db_dose.errors.messages.each do |key, value|
+          puts "! Saving error for Dose: #{db_dose.description}"
+          puts "Because #{key} => #{value[0]}"
+        end
+      end
+    end
+    index += 1
+  end
+end
+
+print `clear`
+seed_from_api

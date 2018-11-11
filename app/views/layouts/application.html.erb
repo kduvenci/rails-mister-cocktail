@@ -6,6 +6,7 @@
     <%= csp_meta_tag %>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Courgette|Pacifico" rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -16,7 +17,11 @@
     <%= javascript_pack_tag "application" %>    <!-- from app/javascript/packs/application.js -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-      AOS.init();
+      AOS.init({
+        delay: 50, // values from 0 to 3000, with step 50ms
+        duration: 300, // values from 0 to 3000, with step 50ms
+        mirror: true, // whether elements should animate out while scrolling past them
+      });
     </script>
   </body>
 </html>

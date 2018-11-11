@@ -1,3 +1,4 @@
+# doses controller
 class DosesController < ApplicationController
   def new
     @cocktail = Cocktail.find(params[:cocktail_id])
@@ -32,7 +33,9 @@ class DosesController < ApplicationController
   def dose_collection(cocktail)
     collection = Ingredient.order(:name)
     cocktail.ingredients.each do |cocktail_ing|
-      collection = collection.reject { |collection_ing| collection_ing == cocktail_ing }
+      collection = collection.reject do |collection_ing|
+        collection_ing == cocktail_ing
+      end
     end
     collection
   end
