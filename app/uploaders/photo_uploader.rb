@@ -3,8 +3,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
   def content_type_whitelist
     /image\//
   end
-
-  def public_id
-    "mr-cocktail/cocktails/#{Cloudinary::Utils.random_public_id}"
+  
+  def store_dir
+    'public/my/upload/mr-cocktail/cocktails'
   end
 end
