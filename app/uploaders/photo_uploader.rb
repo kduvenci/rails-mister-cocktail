@@ -5,6 +5,6 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def public_id
-    "mr-cocktail/#{Cloudinary::Utils.random_public_id}"
+    "mr-cocktail/cocktails/#{Cloudinary::Utils.random_public_id}"
   end
 end
