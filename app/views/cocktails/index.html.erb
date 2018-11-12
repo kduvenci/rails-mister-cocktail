@@ -13,8 +13,12 @@
     		<div class="col-xs-12 col-sm-4">
 					<div class="aos-item" data-aos="flip-up">
 						<div class="aos-item__inner">
-							<div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3),
-							rgba(0,0,0,0.2)),url('<%= cl_image_path cocktail.photo, height: 300, width: 400, crop: :fill %>')">
+							<% if cocktail.photo.present? %>
+								<div class="card" style="background-image: linear-gradient(rgba(0,0,0,0.3),
+								rgba(0,0,0,0.2)),url('<%= cl_image_path cocktail.photo, height: 300, width: 400, crop: :fill %>')">
+							<% else %>
+								<div class="card">
+							<% end %>
 								<div class="card-category">(っ◔◡◔)っ</div>
 								<div class="card-description">
 									<h2><%= cocktail.name%></h2>
