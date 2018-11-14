@@ -35,6 +35,15 @@ class CocktailsController < ApplicationController
     end
   end
 
+  def search
+    if params[:search].blank?
+      redirect_to(root_path, alert: 'Empty field!')
+    else
+      @cocktails = Cocktail.where("name ILIKE ?", "%#{params[:search]}%")
+      render :index
+    end
+  end
+
   def destroy
     @cocktail.destroy
     redirect_to cocktails_url
