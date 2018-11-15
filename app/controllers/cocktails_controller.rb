@@ -1,9 +1,13 @@
 # cocktails controller
 class CocktailsController < ApplicationController
   before_action :set_cocktail, only: [:show, :edit, :update, :destroy]
-
+  
   def index
-    @cocktails = Cocktail.all
+    if params[:query].present?
+      @cocktails = Cocktail.where("name ILIKE ?", "%#{params[:query]}%")
+    else
+      @cocktails = Cocktail.all
+    end
   end
 
   def show
@@ -32,15 +36,6 @@ class CocktailsController < ApplicationController
       redirect_to @cocktail
     else
       render :edit
-    end
-  end
-
-  def search
-    if params[:search].blank?
-      redirect_to(root_path, alert: 'Empty field!')
-    else
-      @cocktails = Cocktail.where("name ILIKE ?", "%#{params[:search]}%")
-      render :index
     end
   end
 
